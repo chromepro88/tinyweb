@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place searches</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+    <script>
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiza18WVXZ8MRJtVDE5GFIHdhn5SCEzm8&libraries=places">
+
+    var map;
+	var service;
+	var infowindow;
+
+      function initMap() {
+        var cck = {lat: 1.3840, lng: 103.7470};
+		var prop1 = {lat: 1.401093, lng: 103.751315};
+		var prop2 = {lat: 1.378183, lng: 103.747078};
+		var prop3 = {lat: 1.377664, lng: 103.745789};
+		var prop4 = {lat: 1.382904, lng: 103.740115};
+		var prop5 = {lat: 1.387139, lng: 103.741433};
+
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: cck,
+          zoom: 15
+        });
+
+        infowindow = new google.maps.InfoWindow();
+		var marker = new google.maps.Marker({
+          position: prop1,
+          map: map,
+          title: 'Hello World!'
+        });
+		var marker = new google.maps.Marker({
+          position: prop2,
+          map: map,
+          title: 'Hello World!'
+        });
+		var marker = new google.maps.Marker({
+          position: prop3,
+          map: map,
+          title: 'Hello World!'
+        });
+		var marker = new google.maps.Marker({
+          position: prop4,
+          map: map,
+          title: 'Hello World!'
+        });
+		var marker = new google.maps.Marker({
+          position: prop5,
+          map: map,
+          title: 'Hello World!'
+        });
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+          location: cck,
+          radius: 500,
+          type: ['store']
+        }, callback);
+      }
+
+      function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiza18WVXZ8MRJtVDE5GFIHdhn5SCEzm8&libraries=places&callback=initMap" async defer></script>
+  </body>
+</html>
